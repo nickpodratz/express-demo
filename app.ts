@@ -1,9 +1,12 @@
 // src/server.ts
 import express from 'express';
 import { randomUUID } from 'node:crypto';
+import cookieParser from 'cookie-parser';
 
 const port = 3000;
 const app = express();
+
+app.use(cookieParser());
 
 let count = 0;
 let todos: string[] = [];
@@ -80,6 +83,20 @@ app.post("/login", (req, res) => {
         sameSite: "lax"
     })
     res.send()
+})
+
+app.get("/me", (req, res) => {
+    const { sessionId } = req.cookies;
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+        return res.status(401).json({ error: "Not authenticated" });
+    }
+
+    return res.json({
+        username: session.username,
+        createdAt: session.createdAt.toISOString()
+    })
 })
 
 app.listen(port, () => {
