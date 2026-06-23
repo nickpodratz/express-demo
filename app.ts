@@ -117,6 +117,10 @@ app.post("/logout", (req, res) => {
     return res.json({ message: "User signed out successfully!" });
 })
 
+app.use((_, res) => {
+    return res.status(404).json({ error: "Unknown resource" });
+});
+
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);
 });
