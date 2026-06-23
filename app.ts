@@ -1,12 +1,14 @@
 // src/server.ts
-import express from 'express';
+import express, { type Request as ExpressRequest, type Response, type NextFunction } from 'express';
 import { randomUUID } from 'node:crypto';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 
 const port = 3000;
 const app = express();
 
 app.use(cookieParser());
+app.use(morgan("tiny"));
 
 let count = 0;
 let todos: string[] = [];
@@ -59,10 +61,25 @@ app.get("/todos/:id", (req, res) => {
 
 type SessionId = string;
 type Session = {
+    id: SessionId,
     username: string,
     createdAt: Date
 }
 const sessions = new Map<SessionId, Session>()
+type Request = ExpressRequest & { session?: Session }
+
+const checkAuth = (req: Request, res: Response, next: NextFunction) => {
+    const { sessionId } = req.cookies;
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+        return res.status(401).json({ error: "Not authenticated" });
+    }
+
+    req.session = session;
+
+    return next();
+}
 
 app.post("/login", (req, res) => {
     const { username, password } = req.query as { username?: string, password?: string };
@@ -73,6 +90,7 @@ app.post("/login", (req, res) => {
 
     const sessionId = randomUUID();
     const session: Session = {
+        id: sessionId,
         username,
         createdAt: new Date()
     };
@@ -85,29 +103,15 @@ app.post("/login", (req, res) => {
     res.send()
 })
 
-app.get("/me", (req, res) => {
-    const { sessionId } = req.cookies;
-    const session = sessions.get(sessionId);
-
-    if (!session) {
-        return res.status(401).json({ error: "Not authenticated" });
-    }
-
+app.get("/me", checkAuth, (req: Request, res) => {
     return res.json({
-        username: session.username,
-        createdAt: session.createdAt.toISOString()
+        username: req.session!.username,
+        createdAt: req.session!.createdAt.toISOString()
     })
 })
 
-app.post("/logout", (req, res) => {
-    const { sessionId } = req.cookies;
-    const session = sessions.get(sessionId);
-
-    if (!session) {
-        return res.status(401).json({ error: "Not authenticated" });
-    }
-
-    sessions.delete(sessionId);
+app.post("/logout", checkAuth, (req: Request, res) => {
+    sessions.delete(req.session!.id);
     res.clearCookie("sessionId", {
         httpOnly: true,
         secure: false,
