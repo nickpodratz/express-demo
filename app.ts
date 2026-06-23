@@ -8,7 +8,7 @@ const port = 3000;
 const app = express();
 
 app.use(cookieParser());
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 
 let count = 0;
 let todos: string[] = [];
