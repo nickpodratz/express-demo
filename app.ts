@@ -99,6 +99,24 @@ app.get("/me", (req, res) => {
     })
 })
 
+app.post("/logout", (req, res) => {
+    const { sessionId } = req.cookies;
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+        return res.status(401).json({ error: "Not authenticated" });
+    }
+
+    sessions.delete(sessionId);
+    res.clearCookie("sessionId", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    });
+
+    return res.json({ message: "User signed out successfully!" });
+})
+
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);
 });
