@@ -1,8 +1,12 @@
 import { type Request, type Response } from "express";
 import service from "./todo.service.ts"
 
-export const post = (req: Request, res: Response) => {
-    const { text } = req.query as { text?: string };
+interface PostTodoParams {
+    text?: string
+}
+
+export const postTodo = (req: Request<any, any, any, PostTodoParams>, res: Response) => {
+    const { text } = req.query;
 
     if (!text) {
         return res.status(400)
@@ -12,13 +16,17 @@ export const post = (req: Request, res: Response) => {
     res.status(201).send();
 }
 
-export const getAll = (_: Request, res: Response) => {
+export const getAllTodos = (_: Request, res: Response) => {
     const todos = service.findAll();
     res.status(200).json({ todos });
 }
 
-export const getById = (req: Request, res: Response) => {
-    const { id } = req.params  as { id?: string };
+interface GetByIdParams {
+    id?: string
+}
+
+export const getById = (req: Request<any, any, any, GetByIdParams>, res: Response) => {
+    const { id } = req.params;
 
     const index = Number(id);
     const todo = service.findByIndex(index);
@@ -31,7 +39,7 @@ export const getById = (req: Request, res: Response) => {
 }
 
 export default {
-    post,
-    getAll,
-    getById
+    post: postTodo,
+    getAll: getAllTodos,
+    getById: getById
 }

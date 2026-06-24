@@ -1,23 +1,12 @@
-import { type Response, type NextFunction } from "express"
+import { type Response } from "express"
 import { type Request } from './types/Request.ts';
 import sessionService from './session.service.ts';
 import authService from './auth.service.ts';
 
-export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
-    const { sessionId } = req.cookies;
-    const session = sessionService.find(sessionId);
+interface LoginQuery { username?: string, password?: string };
 
-    if (!session) {
-        return res.status(401).json({ error: "Not authenticated" });
-    }
-
-    req.session = session;
-
-    return next();
-}
-
-export const handleLogin = (req: Request, res: Response) => {
-    const { username, password } = req.query as { username?: string, password?: string };
+const login = (req: Request<any, any, any, LoginQuery>, res: Response) => {
+    const { username, password } = req.query;
 
     if (!username || !password) {
         return res.status(400).json({ error: "Username or password not provided." })
@@ -38,7 +27,7 @@ export const handleLogin = (req: Request, res: Response) => {
     res.send()
 }
 
-export const handleLogout = (req: Request, res: Response) => {
+export const logout = (req: Request, res: Response) => {
     const sessionId = req.session!.id
 
     sessionService.delete(sessionId)
@@ -49,4 +38,9 @@ export const handleLogout = (req: Request, res: Response) => {
     });
 
     return res.json({ message: "User signed out successfully!" });
+}
+
+export default {
+    login,
+    logout
 }

@@ -1,9 +1,10 @@
 import express from "express"
-import { checkAuth, handleLogin, handleLogout } from "./auth.controller.ts";
+import authController from "./auth.controller.ts";
+import { checkAuth } from "./utils/checkAuth.ts";
 
 const router = express.Router()
 
-router.post("/login", handleLogin);
-router.post("/logout", checkAuth, handleLogout);
+router.post("/login", authController.login);
+router.post("/logout", checkAuth, authController.logout);
 
 export default router;

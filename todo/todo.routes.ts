@@ -1,10 +1,10 @@
 import express from "express"
-import controller from "./todo.controller.ts"
+import todoController from "./todo.controller.ts"
 
 const router = express.Router();
 
-router.post("/", controller.post);
-router.get("/", controller.getAll);
-router.get("/:id", controller.getById);
+router.post("/", todoController.post);
+router.get("/", todoController.getAll);
+router.get("/:id", todoController.getById);
 
 export default router;
