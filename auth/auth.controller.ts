@@ -2,12 +2,11 @@ import { randomUUID } from 'node:crypto';
 import { type Session, type SessionId } from './types/Session.ts';
 import { type Response, type NextFunction } from "express"
 import { type Request } from './types/Request.ts';
-
-const sessions = new Map<SessionId, Session>()
+import sessionService from './session.service.ts'
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     const { sessionId } = req.cookies;
-    const session = sessions.get(sessionId);
+    const session = sessionService.find(sessionId);
 
     if (!session) {
         return res.status(401).json({ error: "Not authenticated" });
@@ -31,17 +30,21 @@ export const handleLogin = (req: Request, res: Response) => {
         username,
         createdAt: new Date()
     };
-    sessions.set(sessionId, session);
+
+    sessionService.create(sessionId, session);
     res.cookie("sessionId", sessionId, {
         httpOnly: true,
         secure: false,
         sameSite: "lax"
     })
+
     res.send()
 }
 
 export const handleLogout = (req: Request, res: Response) => {
-    sessions.delete(req.session!.id);
+    const sessionId = req.session!.id
+
+    sessionService.delete(sessionId)
     res.clearCookie("sessionId", {
         httpOnly: true,
         secure: false,
