@@ -13,21 +13,6 @@ app.use(morgan("dev"));
 
 app.use("/todos", router);
 
-let count = 0;
-
-app.get('/', (_, res) => {
-  res.send('Hello, Syntax!');
-});
-
-app.get('/counter', (_, res) => {
-    res.json({ count });
-});
-
-app.post('/counter', (_, res) => {
-    count += 1;
-    res.status(204).send();
-});
-
 app.get("/health", (_, res) => {
     res.json({
         message: "Server is running",
