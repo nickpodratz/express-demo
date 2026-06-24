@@ -1,8 +1,7 @@
-import { randomUUID } from 'node:crypto';
-import { type Session, type SessionId } from './types/Session.ts';
 import { type Response, type NextFunction } from "express"
 import { type Request } from './types/Request.ts';
-import sessionService from './session.service.ts'
+import sessionService from './session.service.ts';
+import authService from './auth.service.ts';
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     const { sessionId } = req.cookies;
@@ -20,18 +19,16 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 export const handleLogin = (req: Request, res: Response) => {
     const { username, password } = req.query as { username?: string, password?: string };
 
-    if (username !== "admin" || password !== "123") {
+    if (!username || !password) {
+        return res.status(400).json({ error: "Username or password not provided." })
+    }
+
+    const isLoginValid = authService.validateCredentials(username, password);
+    if (!isLoginValid) {
         return res.status(401).json({ error: "Authentication failed" })
     }
 
-    const sessionId = randomUUID();
-    const session: Session = {
-        id: sessionId,
-        username,
-        createdAt: new Date()
-    };
-
-    sessionService.create(sessionId, session);
+    const sessionId = sessionService.create(username);
     res.cookie("sessionId", sessionId, {
         httpOnly: true,
         secure: false,
