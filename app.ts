@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import todoRouter from './todo/todo.routes.ts';
 import authRouter from './auth/auth.routes.ts';
+import userRouter from './user/user.routes.ts'
 
 const port = 3000;
 const app = express();
@@ -12,7 +13,8 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 app.use("/todos", todoRouter);
-app.use("/", authRouter)
+app.use("/", authRouter);
+app.use("/", userRouter);
 
 app.get("/health", (_, res) => {
     res.json({
