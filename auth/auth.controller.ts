@@ -12,8 +12,8 @@ const login = (req: Request<any, any, LoginBody>, res: Response) => {
         return res.status(400).json({ error: "Username or password not provided." })
     }
 
-    const isLoginValid = authService.validateCredentials(username, password);
-    if (!isLoginValid) {
+    const isValidLogin = authService.validateCredentials(username, password);
+    if (!isValidLogin) {
         return res.status(401).json({ error: "Authentication failed" })
     }
 
