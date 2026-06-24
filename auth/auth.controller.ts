@@ -3,10 +3,10 @@ import { type Request } from './types/Request.ts';
 import sessionService from './session.service.ts';
 import authService from './auth.service.ts';
 
-interface LoginQuery { username?: string, password?: string };
+interface LoginBody { username?: string, password?: string };
 
-const login = (req: Request<any, any, any, LoginQuery>, res: Response) => {
-    const { username, password } = req.query;
+const login = (req: Request<any, any, LoginBody>, res: Response) => {
+    const { username, password } = req.body ?? {};
 
     if (!username || !password) {
         return res.status(400).json({ error: "Username or password not provided." })

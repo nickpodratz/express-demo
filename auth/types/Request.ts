@@ -1,6 +1,6 @@
 import { type Request as ExpressRequest } from "express"
 import { type Session } from "./Session.ts"
-import core from "express-serve-static-core"
+import type core from "express-serve-static-core"
 
 export interface Request<
     P = core.ParamsDictionary,
