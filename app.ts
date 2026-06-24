@@ -1,9 +1,9 @@
 // src/server.ts
-import express, { type Request as ExpressRequest, type Response, type NextFunction } from 'express';
-import { randomUUID } from 'node:crypto';
+import express from 'express';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import router from './todo/todo.routes.ts';
+import todoRouter from './todo/todo.routes.ts';
+import authRouter from './auth/auth.routes.ts';
 
 const port = 3000;
 const app = express();
@@ -11,75 +11,14 @@ const app = express();
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-app.use("/todos", router);
+app.use("/todos", todoRouter);
+app.use("/", authRouter)
 
 app.get("/health", (_, res) => {
     res.json({
         message: "Server is running",
         timestamp: new Date().toISOString()
     })
-})
-
-type SessionId = string;
-type Session = {
-    id: SessionId,
-    username: string,
-    createdAt: Date
-}
-const sessions = new Map<SessionId, Session>()
-type Request = ExpressRequest & { session?: Session }
-
-const checkAuth = (req: Request, res: Response, next: NextFunction) => {
-    const { sessionId } = req.cookies;
-    const session = sessions.get(sessionId);
-
-    if (!session) {
-        return res.status(401).json({ error: "Not authenticated" });
-    }
-
-    req.session = session;
-
-    return next();
-}
-
-app.post("/login", (req, res) => {
-    const { username, password } = req.query as { username?: string, password?: string };
-
-    if (username !== "admin" || password !== "123") {
-        return res.status(401).json({ error: "Authentication failed" })
-    }
-
-    const sessionId = randomUUID();
-    const session: Session = {
-        id: sessionId,
-        username,
-        createdAt: new Date()
-    };
-    sessions.set(sessionId, session);
-    res.cookie("sessionId", sessionId, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax"
-    })
-    res.send()
-})
-
-app.get("/me", checkAuth, (req: Request, res) => {
-    return res.json({
-        username: req.session!.username,
-        createdAt: req.session!.createdAt.toISOString()
-    })
-})
-
-app.post("/logout", checkAuth, (req: Request, res) => {
-    sessions.delete(req.session!.id);
-    res.clearCookie("sessionId", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax"
-    });
-
-    return res.json({ message: "User signed out successfully!" });
 })
 
 app.use((_, res) => {
