@@ -1,5 +1,8 @@
 {
   "type": "module",
+  "scripts": {
+    "dev": "node server.ts"
+  },
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "express": "^5.2.1",
