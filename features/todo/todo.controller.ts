@@ -2,12 +2,8 @@ import { type Request, type Response } from "express";
 import service from "./todo.service.ts"
 import { ValidationError } from "../../utils/error.ts";
 
-interface PostTodoParams {
-    text?: string
-}
-
-export const postTodo = async (req: Request<any, any, any, PostTodoParams>, res: Response) => {
-    const { text } = req.query;
+export const postTodo = async (req: Request<any, any, { text?: string }>, res: Response) => {
+    const { text } = req.body ?? {};
 
     if (!text) throw new ValidationError("Post text absent");
 
@@ -21,11 +17,7 @@ export const getAllTodos = async (_: Request, res: Response) => {
     res.json({ todos });
 }
 
-interface GetByIdParams {
-    id?: string
-}
-
-export const getById = async (req: Request<any, any, any, GetByIdParams>, res: Response) => {
+export const getById = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params;
 
     const index = Number(id);
