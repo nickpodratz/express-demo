@@ -1,3 +1,4 @@
+import { NoSessionError } from './auth.error.ts';
 import { type Session, type SessionId } from './types/Session.ts';
 import { randomUUID } from 'node:crypto';
 
@@ -19,8 +20,10 @@ const createSession = (username: string): SessionId => {
     return sessionId;
 }
 
-const findSession = (id: SessionId): Session | null => {
-    return sessions.get(id) ?? null;
+const findSession = (id: SessionId): Session => {
+    const session = sessions.get(id);
+    if (!session) throw new NoSessionError();
+    return session;
 }
 
 export default {
