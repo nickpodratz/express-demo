@@ -10,4 +10,6 @@ export const handleTodoErrors = (error: Error, req: Request, res: Response, next
     if (error instanceof TodoNotFound) {
         return res.status(404).json({ error: error.message })
     }
+
+    next(error)
 }

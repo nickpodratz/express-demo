@@ -13,10 +13,7 @@ const login = (req: Request<any, any, LoginBody>, res: Response) => {
         throw new ValidationError("Username or password not provided.")
     }
 
-    const isValidLogin = authService.validateCredentials(username, password);
-    if (!isValidLogin) {
-        throw new AuthError();
-    }
+    authService.validateCredentials(username, password);
 
     const sessionId = sessionService.create(username);
     res.cookie("sessionId", sessionId, {

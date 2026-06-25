@@ -1,6 +1,9 @@
+import { BadCredentialsError } from "./auth.error.ts"
 
-const validateCredentials = (username: string, password: string): boolean => {
-    return username === "admin" && password === "123"
+const validateCredentials = (username: string, password: string) => {
+    if (username !== "admin" || password !== "123") {
+        throw new BadCredentialsError();
+    }
 }
 
 export default {
