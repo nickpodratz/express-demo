@@ -1,4 +1,4 @@
-import { type NextFunction, type Request, type Response } from "express";
+import { type Request, type Response } from "express";
 import service from "./todo.service.ts"
 import { ValidationError } from "../../utils/error.ts";
 
@@ -6,7 +6,7 @@ interface PostTodoParams {
     text?: string
 }
 
-export const postTodo = async (req: Request<any, any, any, PostTodoParams>, res: Response, next: NextFunction) => {
+export const postTodo = async (req: Request<any, any, any, PostTodoParams>, res: Response) => {
     const { text } = req.query;
 
     if (!text) throw new ValidationError("Post text absent");
@@ -25,7 +25,7 @@ interface GetByIdParams {
     id?: string
 }
 
-export const getById = async (req: Request<any, any, any, GetByIdParams>, res: Response, next: NextFunction) => {
+export const getById = async (req: Request<any, any, any, GetByIdParams>, res: Response) => {
     const { id } = req.params;
 
     const index = Number(id);
