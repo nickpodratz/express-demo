@@ -18,7 +18,7 @@ export const postTodo = async (req: Request<any, any, any, PostTodoParams>, res:
 
 export const getAllTodos = async (_: Request, res: Response) => {
     const todos = await service.findAll();
-    res.status(200).json({ todos });
+    res.json({ todos });
 }
 
 interface GetByIdParams {
@@ -30,7 +30,8 @@ export const getById = async (req: Request<any, any, any, GetByIdParams>, res: R
 
     const index = Number(id);
     const todo = await service.findByIndex(index);
-    return res.json({ text: todo });
+
+    res.json({ text: todo });
 }
 
 export default {

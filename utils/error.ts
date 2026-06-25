@@ -18,7 +18,7 @@ export class ResourceNotFound extends Error {
     }
 }
 
-export const handleErrors = (error: Error, req: Request, res: Response, next: NextFunction) => {
+export const handleErrors = (error: Error, _req: Request, res: Response, _next: NextFunction) => {
     if (error instanceof ValidationError) {
         return res.status(400).json({ error: error.message })
     }

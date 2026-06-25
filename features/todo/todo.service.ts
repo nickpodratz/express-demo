@@ -1,4 +1,4 @@
-import { TodoNotFound, TodoTooShortError } from "./todo.error.ts";
+import { TodoNotFound, TodoTooShort } from "./todo.errors.ts";
 
 type Todo = string;
 
@@ -6,7 +6,7 @@ let todos: Todo[] = [];
 
 const create = async (todo: Todo) => {
     if (todo.length < 4) {
-        throw new TodoTooShortError(4);
+        throw new TodoTooShort(4);
     }
     todos.push(todo);
 }
