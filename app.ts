@@ -1,5 +1,5 @@
 // src/server.ts
-import express from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import todoRouter from './todo/todo.routes.ts';
@@ -24,8 +24,9 @@ app.get("/health", (_, res) => {
     })
 })
 
-app.use((_, res) => {
-    return res.status(404).json({ error: "Unknown resource" });
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log(err.stack)
+    return res.status(500).json({ error: "An unknown error occured." });
 });
 
 app.listen(port, () => {
