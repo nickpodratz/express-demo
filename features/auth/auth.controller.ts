@@ -12,10 +12,10 @@ const login = (req: Request<any, any, LoginBody>, res: Response) => {
         return res.status(400).json({ error: "Username or password not provided." })
     }
 
-    authService.validateCredentials(username, password);
+    authService.assertCredentials(username, password);
 
     const sessionId = sessionService.create(username);
-    
+
     res.cookie("sessionId", sessionId, {
         httpOnly: true,
         secure: false,

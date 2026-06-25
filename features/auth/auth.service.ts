@@ -1,11 +1,11 @@
-import { BadCredentialsError } from "./auth.error.ts"
+import { CredentialsInvalid } from "./auth.error.ts";
 
-const validateCredentials = (username: string, password: string) => {
+const assertCredentials = (username: string, password: string) => {
     if (username !== "admin" || password !== "123") {
-        throw new BadCredentialsError();
+        throw new CredentialsInvalid();
     }
 }
 
 export default {
-    validateCredentials
+    assertCredentials
 }
