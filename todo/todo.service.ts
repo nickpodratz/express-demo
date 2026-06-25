@@ -1,3 +1,4 @@
+import { TodoNotFound } from "./todo.error.ts";
 
 type Todo = string;
 
@@ -11,8 +12,11 @@ const findAll = () => {
     return todos;
 }
 
-const findByIndex = (index: number): Todo | null => {
-    return todos[index] ?? null;
+const findByIndex = (index: number): Todo => {
+    if (index >= todos.length) {
+        throw new TodoNotFound(index);
+    }
+    return todos[index]!;
 }
 
 export default {

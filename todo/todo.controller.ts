@@ -31,11 +31,7 @@ export const getById = (req: Request<any, any, any, GetByIdParams>, res: Respons
     const index = Number(id);
     const todo = service.findByIndex(index);
 
-    if (!todo) {
-        return res.status(404).send();
-    }
-
-    return res.status(200).json({ text: todo });
+    return res.json({ text: todo });
 }
 
 export default {
