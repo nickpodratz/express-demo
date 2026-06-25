@@ -1,20 +1,14 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
 
-export class MissingParameter extends Error {
+export class ValidationError extends Error {
     constructor(message: string) {
         super(message);
     }
 }
 
-export class InvalidParameter extends Error {
-    constructor(message: string) {
-        super(message);
-    }
-}
-
-export class AuthFailed extends Error {
-    constructor(message: string) {
-        super(message);
+export class AuthError extends Error {
+    constructor() {
+        super("Authentication failed");
     }
 }
 
@@ -25,13 +19,10 @@ export class ResourceNotFound extends Error {
 }
 
 export const handleErrors = (error: Error, req: Request, res: Response, next: NextFunction) => {
-    if (error instanceof MissingParameter) {
+    if (error instanceof ValidationError) {
         return res.status(400).json({ error: error.message })
     }
-    if (error instanceof InvalidParameter) {
-        return res.status(400).json({ error: error.message })
-    }
-    if (error instanceof AuthFailed) {
+    if (error instanceof AuthError) {
         return res.status(401).json({ error: error.message })
     }
     if (error instanceof ResourceNotFound) {

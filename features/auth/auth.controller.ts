@@ -2,6 +2,7 @@ import { type Response } from "express"
 import { type Request } from './types/Request.ts';
 import sessionService from './session.service.ts';
 import authService from './auth.service.ts';
+import { AuthError, ValidationError } from "../../utils/error.ts";
 
 interface LoginBody { username?: string, password?: string };
 
@@ -9,12 +10,12 @@ const login = (req: Request<any, any, LoginBody>, res: Response) => {
     const { username, password } = req.body ?? {};
 
     if (!username || !password) {
-        return res.status(400).json({ error: "Username or password not provided." })
+        throw new ValidationError("Username or password not provided.")
     }
 
     const isValidLogin = authService.validateCredentials(username, password);
     if (!isValidLogin) {
-        return res.status(401).json({ error: "Authentication failed" })
+        throw new AuthError();
     }
 
     const sessionId = sessionService.create(username);

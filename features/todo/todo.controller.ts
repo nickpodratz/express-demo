@@ -1,5 +1,6 @@
 import { type Request, type Response } from "express";
 import service from "./todo.service.ts"
+import { ValidationError } from "../../utils/error.ts";
 
 interface PostTodoParams {
     text?: string
@@ -8,9 +9,7 @@ interface PostTodoParams {
 export const postTodo = (req: Request<any, any, any, PostTodoParams>, res: Response) => {
     const { text } = req.query;
 
-    if (!text) {
-        return res.status(400)
-    }
+    if (!text) throw new ValidationError("Post text absent");
 
     service.create(text);
     res.status(201).send();
