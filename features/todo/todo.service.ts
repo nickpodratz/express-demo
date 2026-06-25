@@ -5,8 +5,8 @@ type Todo = string;
 let todos: Todo[] = [];
 
 const create = async (todo: Todo) => {
-    if (todo.length < 4) {
-        throw new TodoTooShort(4);
+    if (todo.length < TodoTooShort.minLength) {
+        throw new TodoTooShort();
     }
     todos.push(todo);
 }

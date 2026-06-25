@@ -6,8 +6,10 @@ export class TodoNotFound extends Error {
 }
 
 export class TodoTooShort extends Error {
-    constructor(minLength: number) {
-        super(`Todo text must have at least ${minLength} characters.`);
+    static readonly minLength = 4;
+
+    constructor() {
+        super(`A Todo text must have at least ${TodoTooShort.minLength} characters.`);
         this.name = new.target.name;
     }
 }
