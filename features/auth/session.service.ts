@@ -4,8 +4,9 @@ import { randomUUID } from 'node:crypto';
 
 const sessions = new Map<SessionId, Session>()
 
-const deleteSession = (id: SessionId): boolean => {
-    return sessions.delete(id)
+const deleteSession = (id: SessionId) => {
+    const wasDeleted = sessions.delete(id);
+    if (!wasDeleted) throw new NoSessionError();
 }
 
 const createSession = (username: string): SessionId => {
