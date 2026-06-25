@@ -5,7 +5,7 @@ export const postTodo = async (req: Request<any, any, { text?: string }>, res: R
     const { text } = req.body ?? {};
 
     if (!text) {
-        return res.status(400).json({ error: "Post text is missing." });
+        return res.status(400).json({ error: "Todo text is missing." });
     }
 
     await todoService.create(text);
@@ -23,6 +23,10 @@ export const getById = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params;
 
     const index = Number(id);
+    if (!Number.isInteger(index) || index < 0) {
+        return res.json({ error: "id is not a valid index." })
+    }
+
     const todo = await todoService.findByIndex(index);
 
     res.json({ text: todo });
