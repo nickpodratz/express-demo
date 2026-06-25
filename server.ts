@@ -5,8 +5,8 @@ import morgan from 'morgan';
 import todoRouter from './features/todo/todo.routes.ts';
 import authRouter from './features/auth/auth.routes.ts';
 import userRouter from './features/user/user.routes.ts'
-import { handleErrors } from './utils/error.ts';
-import { checkHealth } from './utils/checkHealth.ts';
+import { errorFallback } from './utils/errorFallback.ts';
+import { getHealth } from './utils/health.ts';
 
 const port = 3000;
 const app = express();
@@ -18,8 +18,8 @@ app.use(morgan("dev"));
 app.use("/todos", todoRouter);
 app.use("/", authRouter);
 app.use("/", userRouter);
-app.get("/health", checkHealth)
-app.use(handleErrors);
+app.get("/health", getHealth);
+app.use(errorFallback);
 
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);

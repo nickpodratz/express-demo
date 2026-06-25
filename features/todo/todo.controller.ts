@@ -1,19 +1,21 @@
 import { type Request, type Response } from "express";
-import service from "./todo.service.ts"
-import { ValidationError } from "../../utils/error.ts";
+import todoService from "./todo.service.ts"
 
 export const postTodo = async (req: Request<any, any, { text?: string }>, res: Response) => {
     const { text } = req.body ?? {};
 
-    if (!text) throw new ValidationError("Post text absent");
+    if (!text) {
+        return res.status(400).json({ error: "Post text is missing." });
+    }
 
-    await service.create(text);
+    await todoService.create(text);
 
     res.status(201).send();
 }
 
 export const getAllTodos = async (_: Request, res: Response) => {
-    const todos = await service.findAll();
+    const todos = await todoService.findAll();
+
     res.json({ todos });
 }
 
@@ -21,7 +23,7 @@ export const getById = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params;
 
     const index = Number(id);
-    const todo = await service.findByIndex(index);
+    const todo = await todoService.findByIndex(index);
 
     res.json({ text: todo });
 }
