@@ -24,7 +24,7 @@ export const getById = async (req: Request<{ id: string }>, res: Response) => {
 
     const index = Number(id);
     if (!Number.isInteger(index) || index < 0) {
-        return res.json({ error: "id is not a valid index." })
+        return res.status(400).json({ error: "id is not a valid index." })
     }
 
     const todo = await todoService.findByIndex(index);
