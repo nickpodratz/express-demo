@@ -6,7 +6,7 @@ const pool = getPostgresPool();
 const createUser = async (username: string): Promise<User> => {
     const result = await pool.query<User>(
         `
-        INSERT INTO users
+        INSERT INTO users (username)
         VALUES ($1)
         RETURNING id, username
         `,

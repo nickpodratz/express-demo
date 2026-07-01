@@ -9,8 +9,12 @@ const getSelf = (req: Request, res: Response) => {
     })
 }
 
-const createUser = async (req: Request<any, any, { username: string }>, res: Response) => {
+const createUser = async (req: Request<any, any, { username?: string }>, res: Response) => {
     const { username } = req.body ?? {};
+
+    if (!username) {
+        return res.status(400).json({ error: "Username must be provided." })
+    }
 
     const user = await userService.create(username);
 
