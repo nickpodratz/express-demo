@@ -5,14 +5,18 @@
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "morgan": "^1.11.0"
+    "morgan": "^1.11.0",
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
+    "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
     "@types/node": "^26.0.0",
+    "@types/pg": "^8.20.0",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   }
