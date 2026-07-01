@@ -29,8 +29,15 @@ const findUser = async (req: Request<{ id: number }>, res: Response) => {
     res.json(user);
 }
 
+const findAllUsers = async (req: Request, res: Response) => {
+    const users = await userService.findAll();
+
+    res.json(users);
+}
+
 export default {
     getSelf,
     create: createUser,
-    find: findUser
+    find: findUser,
+    findAll: findAllUsers
 }

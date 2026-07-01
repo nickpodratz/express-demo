@@ -24,7 +24,12 @@ const findUser = async (id: number): Promise<User> => {
     return user
 }
 
+const findAllUsers = async (): Promise<User[]> => {
+    return await userRepo.findAll();
+}
+
 export default {
     create: createUser,
-    find: findUser
+    find: findUser,
+    findAll: findAllUsers
 }

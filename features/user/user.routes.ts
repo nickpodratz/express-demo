@@ -9,6 +9,7 @@ router.get("/me", requireAuth, userController.getSelf);
 
 router.post("/users", userController.create);
 router.get("/users/:id", userController.find);
+router.get("/users", userController.findAll)
 router.use(userErrorHandler);
 
 export default router;
