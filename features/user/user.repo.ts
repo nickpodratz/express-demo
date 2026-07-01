@@ -27,7 +27,20 @@ const findUser = async (id: number): Promise<User | null> => {
     return result.rows[0] ?? null
 }
 
+const checkUsernameTaken = async (username: string): Promise<boolean> => {
+    const result = await pool.query<[User]>(
+        `
+        SELECT id, username
+        FROM users
+        WHERE username = $1
+        `,
+        [username]
+    )
+    return result.rows.length >= 1;
+}
+
 export default {
     create: createUser,
-    find: findUser
+    find: findUser,
+    checkUsernameTaken
 }

@@ -7,9 +7,16 @@ export class UsernameTooShort extends Error {
     }
 }
 
+export class UsernameTaken extends Error {
+    constructor(username: string) {
+        super(`The username '${username}' is already taken.`);
+        this.name = new.target.name;
+    }
+}
+
 export class UserNotFound extends Error {
     constructor(id: number) {
-        super(`The user with id=${id} could not be found.`);
+        super(`A user with id=${id} could not be found.`);
         this.name = new.target.name;
     }
 }
