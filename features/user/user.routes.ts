@@ -4,6 +4,9 @@ import { requireAuth } from "../auth/auth.middleware.ts";
 
 const router = express.Router();
 
-router.get("/me", requireAuth, userController.getSelf)
+router.get("/me", requireAuth, userController.getSelf);
+
+router.post("/users", userController.create);
+router.get("/users/:id", userController.find);
 
 export default router;
