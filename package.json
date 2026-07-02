@@ -1,9 +1,12 @@
 {
     "type": "module",
     "scripts": {
-        "dev": "tsx watch server.ts",
+        "dev": "node --watch src/server.ts",
         "build": "tsc --build",
         "start": "node dist/server.js",
+        "docker:up": "docker compose -f docker-compose.yml -f docker-compose.dev.yml up",
+        "docker:down": "docker compose down",
+        "docker:reset": "docker compose down -v",
         "lint": "eslint",
         "lint:fix": "eslint --fix"
     },

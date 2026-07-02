@@ -1,0 +1,7 @@
+services:
+    server:
+        build: .
+        volumes:
+            - .:/server
+            - /server/node_modules
+        command: npm run dev
