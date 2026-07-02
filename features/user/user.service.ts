@@ -1,5 +1,5 @@
 import type { User } from "./types/user.ts";
-import { UsernameTaken, UsernameTooShort, UserNotFound } from "./user.errors.ts";
+import { DatabaseQueryFailed, UsernameTaken, UsernameTooShort, UserNotFound } from "./user.errors.ts";
 import userRepo from "./user.repo.ts"
 
 const createUser = async (username: string): Promise<User> => {
@@ -7,11 +7,18 @@ const createUser = async (username: string): Promise<User> => {
         throw new UsernameTooShort();
     }
 
-    if (await userRepo.checkUsernameTaken(username)) {
-        throw new UsernameTaken(username);
+    let user: User | undefined = undefined;
+    try {
+        user = await userRepo.create(username);
+    } catch (err) {
+        if ((err as any).code === "23505") {
+            throw new UsernameTaken(username);
+        } else {
+            throw new DatabaseQueryFailed();
+        }
     }
 
-    return await userRepo.create(username);
+    return user;
 }
 
 const findUser = async (id: number): Promise<User> => {

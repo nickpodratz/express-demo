@@ -20,3 +20,10 @@ export class UserNotFound extends Error {
         this.name = new.target.name;
     }
 }
+
+export class DatabaseQueryFailed extends Error {
+    constructor() {
+        super(`The database query failed.`);
+        this.name = new.target.name;
+    }
+}
