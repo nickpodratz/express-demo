@@ -8,7 +8,7 @@ services:
         depends_on:
             - database
         env_file:
-            - .env.local
+            - .env.example
 
     database:
         image: postgres:15
@@ -24,7 +24,7 @@ services:
             - pgdata2509:/var/lib/postgresql/data
             - ./src/db/migrations:/docker-entrypoint-initdb.d
         env_file:
-            - .env.local
+            - .env.example
 
 volumes:
     pgdata2509:

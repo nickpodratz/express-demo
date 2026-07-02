@@ -2,7 +2,7 @@ import { loadEnvFile } from "node:process"
 import "dotenv/config"
 import { Pool } from "pg"
 
-loadEnvFile(".env.local")
+loadEnvFile(".env.example")
 
 let pool: Pool | null = null // Singelton
 
