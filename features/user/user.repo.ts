@@ -1,12 +1,14 @@
 import type { QueryResult } from "pg";
-import { getPostgresPool } from "../../db/pool.postgres.ts"
+import { getPostgresPool } from "../../db/postgres.pool.ts"
 import type { User } from "./types/user.ts"
 import { DatabaseQueryFailed, UsernameTaken } from "./user.errors.ts";
+import { DatabaseError } from "pg"
+import { PG_ERROR_CODES } from "../../db/postgres.constants.ts";
 
 const pool = getPostgresPool();
 
 const createUser = async (username: string): Promise<User> => {
-    let result: QueryResult<User> | undefined = undefined
+    let result: QueryResult<User> | undefined
 
     try {
         result = await pool.query<User>(
@@ -18,15 +20,14 @@ const createUser = async (username: string): Promise<User> => {
             [username]
         )
     } catch (err) {
-        const UNIQUE_CONSTRAINT_VIOLATION_CODE = "23505"
-        if ((err as any).code === UNIQUE_CONSTRAINT_VIOLATION_CODE) {
+        if (err instanceof DatabaseError && err.code === PG_ERROR_CODES.UNIQUE_VIOLATION) {
             throw new UsernameTaken(username);
         } else {
             throw new DatabaseQueryFailed();
         }
     }
 
-    return result.rows[0]!;
+    return result.rows[0]!
 }
 
 const findUser = async (id: number): Promise<User | null> => {
