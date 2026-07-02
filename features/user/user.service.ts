@@ -1,5 +1,6 @@
+import { UniqueConstraintViolation } from "../../db/postgres.errors.ts";
 import type { User } from "./types/user.ts";
-import { UsernameTooShort, UserNotFound } from "./user.errors.ts";
+import { UsernameTaken, UsernameTooShort, UserNotFound } from "./user.errors.ts";
 import userRepo from "./user.repo.ts"
 
 const createUser = async (username: string): Promise<User> => {
@@ -7,7 +8,15 @@ const createUser = async (username: string): Promise<User> => {
         throw new UsernameTooShort();
     }
 
-    return await userRepo.create(username);
+    let user: User
+    try {
+        user = await userRepo.create(username);
+    } catch (err) {
+        if (err instanceof UniqueConstraintViolation) throw new UsernameTaken(username)
+        throw err
+    }
+
+    return user
 }
 
 const findUser = async (id: number): Promise<User> => {

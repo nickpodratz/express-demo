@@ -21,9 +21,9 @@ export class UserNotFound extends Error {
     }
 }
 
-export class DatabaseQueryFailed extends Error {
-    constructor() {
-        super(`The database query failed.`);
+export class UserCreationFailed extends Error {
+    constructor(username: string) {
+        super(`The user could not be created.`);
         this.name = new.target.name;
     }
 }

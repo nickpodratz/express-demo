@@ -1,9 +1,10 @@
 import type { QueryResult } from "pg";
 import { getPostgresPool } from "../../db/postgres.pool.ts"
 import type { User } from "./types/user.ts"
-import { DatabaseQueryFailed, UsernameTaken } from "./user.errors.ts";
 import { DatabaseError } from "pg"
 import { PG_ERROR_CODES } from "../../db/postgres.constants.ts";
+import { UniqueConstraintViolation } from "../../db/postgres.errors.ts";
+import assert from "node:assert";
 
 const pool = getPostgresPool();
 
@@ -21,13 +22,14 @@ const createUser = async (username: string): Promise<User> => {
         )
     } catch (err) {
         if (err instanceof DatabaseError && err.code === PG_ERROR_CODES.UNIQUE_VIOLATION) {
-            throw new UsernameTaken(username);
-        } else {
-            throw new DatabaseQueryFailed();
+            throw new UniqueConstraintViolation();
         }
+        throw err
     }
 
-    return result.rows[0]!
+    const user = result.rows[0]
+    assert(user, "INSERT returned no rows unexpectedly")
+    return user
 }
 
 const findUser = async (id: number): Promise<User | null> => {
