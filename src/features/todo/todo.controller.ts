@@ -1,4 +1,4 @@
-import { type Request, type Response } from "express"
+import type { Request, Response } from "express"
 import todoService from "./todo.service.ts"
 
 export const postTodo = async (req: Request<any, any, { text?: string }>, res: Response) => {

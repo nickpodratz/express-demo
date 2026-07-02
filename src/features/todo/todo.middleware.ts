@@ -1,4 +1,4 @@
-import { type Request, type Response, type NextFunction } from "express"
+import type { Request, Response, NextFunction } from "express"
 import { TodoNotFound, TodoTooShort } from "./todo.errors.ts"
 
 export const todoErrorHandler = (error: Error, _: Request, res: Response, next: NextFunction) => {
