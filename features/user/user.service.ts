@@ -1,5 +1,5 @@
 import type { User } from "./types/user.ts";
-import { DatabaseQueryFailed, UsernameTaken, UsernameTooShort, UserNotFound } from "./user.errors.ts";
+import { UsernameTooShort, UserNotFound } from "./user.errors.ts";
 import userRepo from "./user.repo.ts"
 
 const createUser = async (username: string): Promise<User> => {
