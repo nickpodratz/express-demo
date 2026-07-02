@@ -7,18 +7,7 @@ const createUser = async (username: string): Promise<User> => {
         throw new UsernameTooShort();
     }
 
-    let user: User | undefined = undefined;
-    try {
-        user = await userRepo.create(username);
-    } catch (err) {
-        if ((err as any).code === "23505") {
-            throw new UsernameTaken(username);
-        } else {
-            throw new DatabaseQueryFailed();
-        }
-    }
-
-    return user;
+    return await userRepo.create(username);
 }
 
 const findUser = async (id: number): Promise<User> => {
