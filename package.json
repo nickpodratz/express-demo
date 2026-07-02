@@ -1,7 +1,9 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "node server.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc --build",
+    "start": "node server.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
