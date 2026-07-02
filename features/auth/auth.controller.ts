@@ -1,9 +1,12 @@
 import { type Response } from "express"
-import { type Request } from './types/Request.ts'
-import sessionService from './session.service.ts'
-import authService from './auth.service.ts'
+import { type Request } from "./types/Request.ts"
+import sessionService from "./session.service.ts"
+import authService from "./auth.service.ts"
 
-interface LoginBody { username?: string, password?: string };
+interface LoginBody {
+    username?: string
+    password?: string
+}
 
 const login = (req: Request<any, any, LoginBody>, res: Response) => {
     const { username, password } = req.body ?? {}
@@ -29,7 +32,7 @@ export const logout = (req: Request, res: Response) => {
     const sessionId = req.session!.id
 
     sessionService.delete(sessionId)
-    
+
     res.clearCookie("sessionId", {
         httpOnly: true,
         secure: false,

@@ -1,5 +1,5 @@
-import { type Request, type Response, type NextFunction } from 'express'
-import { UserCreationFailed, UsernameTaken, UsernameTooShort, UserNotFound } from './user.errors.ts'
+import { type Request, type Response, type NextFunction } from "express"
+import { UserCreationFailed, UsernameTaken, UsernameTooShort, UserNotFound } from "./user.errors.ts"
 
 export const userErrorHandler = (error: Error, _: Request, res: Response, next: NextFunction) => {
     if (error instanceof UsernameTooShort) {

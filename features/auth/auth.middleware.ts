@@ -1,6 +1,6 @@
 import { type Response, type NextFunction } from "express"
-import { type Request } from './types/Request.ts'
-import sessionService from './session.service.ts'
+import { type Request } from "./types/Request.ts"
+import sessionService from "./session.service.ts"
 import { CredentialsInvalid, SessionMissing } from "./auth.error.ts"
 
 export const requireAuth = (req: Request, _: Response, next: NextFunction) => {

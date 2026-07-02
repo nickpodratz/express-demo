@@ -21,7 +21,7 @@ const createUser = async (username: string): Promise<User> => {
 
 const findUser = async (id: number): Promise<User> => {
     const user = await userRepo.find(id)
-    
+
     if (!user) {
         throw new UserNotFound(id)
     }

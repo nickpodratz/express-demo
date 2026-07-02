@@ -1,31 +1,30 @@
 services:
+    server:
+        container_name: demo-server
+        build: .
+        restart: always
+        ports:
+            - "3000:3000"
+        depends_on:
+            - database
+        env_file:
+            - .env.local
 
-  server:
-    container_name: demo-server
-    build: .
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - database
-    env_file:
-      - .env.local
-
-  database:
-    image: postgres:15
-    container_name: demo-database
-    restart: always
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: syntax_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata2509:/var/lib/postgresql/data
-      - ./db/migrations:/docker-entrypoint-initdb.d
-    env_file:
-      - .env.local
+    database:
+        image: postgres:15
+        container_name: demo-database
+        restart: always
+        environment:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: 1234
+            POSTGRES_DB: syntax_db
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata2509:/var/lib/postgresql/data
+            - ./db/migrations:/docker-entrypoint-initdb.d
+        env_file:
+            - .env.local
 
 volumes:
-  pgdata2509:
+    pgdata2509:

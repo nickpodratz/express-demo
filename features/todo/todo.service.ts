@@ -1,6 +1,6 @@
 import { TodoNotFound, TodoTooShort } from "./todo.errors.ts"
 
-type Todo = string;
+type Todo = string
 
 let todos: Todo[] = []
 

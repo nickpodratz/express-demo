@@ -1,6 +1,6 @@
-import { SessionMissing } from './auth.error.ts'
-import { type Session, type SessionId } from './types/Session.ts'
-import { randomUUID } from 'node:crypto'
+import { SessionMissing } from "./auth.error.ts"
+import { type Session, type SessionId } from "./types/Session.ts"
+import { randomUUID } from "node:crypto"
 
 const sessions = new Map<SessionId, Session>()
 
