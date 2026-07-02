@@ -5,8 +5,8 @@ import morgan from "morgan"
 import todoRouter from "./features/todo/todo.routes.ts"
 import authRouter from "./features/auth/auth.routes.ts"
 import userRouter from "./features/user/user.routes.ts"
-import { errorFallback } from "./utils/errorFallback.ts"
-import { getHealth } from "./utils/health.ts"
+import { errorFallback } from "./error.middleware.ts"
+import { getHealth } from "./health.ts"
 
 const port = 3000
 const app = express()
