@@ -1,10 +1,10 @@
-import { loadEnvFile } from 'node:process';
-import "dotenv/config";
-import { Pool } from "pg";
+import { loadEnvFile } from 'node:process'
+import "dotenv/config"
+import { Pool } from "pg"
 
-loadEnvFile('.env.local');
+loadEnvFile('.env.local')
 
-let pool: Pool | null = null; // Singelton
+let pool: Pool | null = null // Singelton
 
 export function getPostgresPool(): Pool {
   if (!pool) {
@@ -18,13 +18,13 @@ export function getPostgresPool(): Pool {
       max: 10,
       idleTimeoutMillis: 30_000,
       connectionTimeoutMillis: 2_000,
-    });
+    })
 
     pool.on("error", (err) => {
-      console.error("Unexpected PG pool error", err);
-      process.exit(1);
-    });
+      console.error("Unexpected PG pool error", err)
+      process.exit(1)
+    })
   }
 
-  return pool;
+  return pool
 }

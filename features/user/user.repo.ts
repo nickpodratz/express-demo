@@ -1,12 +1,12 @@
-import type { QueryResult } from "pg";
+import type { QueryResult } from "pg"
 import { getPostgresPool } from "../../db/postgres.pool.ts"
 import type { User } from "./types/user.ts"
 import { DatabaseError } from "pg"
-import { PG_ERROR_CODES } from "../../db/postgres.constants.ts";
-import { UniqueConstraintViolation } from "../../db/postgres.errors.ts";
-import assert from "node:assert";
+import { PG_ERROR_CODES } from "../../db/postgres.constants.ts"
+import { UniqueConstraintViolation } from "../../db/postgres.errors.ts"
+import assert from "node:assert"
 
-const pool = getPostgresPool();
+const pool = getPostgresPool()
 
 const createUser = async (username: string): Promise<User> => {
     let result: QueryResult<User> | undefined
@@ -22,7 +22,7 @@ const createUser = async (username: string): Promise<User> => {
         )
     } catch (err) {
         if (err instanceof DatabaseError && err.code === PG_ERROR_CODES.UNIQUE_VIOLATION) {
-            throw new UniqueConstraintViolation();
+            throw new UniqueConstraintViolation()
         }
         throw err
     }

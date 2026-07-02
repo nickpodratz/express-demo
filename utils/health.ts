@@ -1,4 +1,4 @@
-import { type Request, type Response } from 'express';
+import { type Request, type Response } from 'express'
 
 export const getHealth = (_: Request, res: Response) => {
     return res.json({

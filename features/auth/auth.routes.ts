@@ -1,11 +1,11 @@
 import express from "express"
-import authController from "./auth.controller.ts";
-import { authErrorHandler, requireAuth } from "./auth.middleware.ts";
+import authController from "./auth.controller.ts"
+import { authErrorHandler, requireAuth } from "./auth.middleware.ts"
 
 const router = express.Router()
 
-router.post("/login", authController.login);
-router.post("/logout", requireAuth, authController.logout);
-router.use(authErrorHandler);
+router.post("/login", authController.login)
+router.post("/logout", requireAuth, authController.logout)
+router.use(authErrorHandler)
 
-export default router;
+export default router
